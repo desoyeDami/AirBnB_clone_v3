@@ -3,6 +3,7 @@ from api.v1.views import app_views
 from flask import jsonify, request, abort
 from models.state import State
 from models import storage
+ST = '/states/<state_id>'
 
 
 @app_views.route('/states', methods=['GET'], strict_slashes=False)
@@ -56,7 +57,7 @@ def update_state(state_id):
     return jsonify(state.to_dict()), 200
 
 
-@app_views.route('/states/<state_id>', methods=['DELETE'], strict_slashes=False)
+@app_views.route(ST, methods=['DELETE'], strict_slashes=False)
 def delete_state(state_id):
     """ """
     state = storage.get(State, state_id)
