@@ -56,7 +56,7 @@ def update_amenity(amenity_id):
     return jsonify(amenity.to_dict()), 200
 
 
-@app_views.route(amn, methods=['DELETE'], strict_slashes=False)
+@app_views.route(AMN, methods=['DELETE'], strict_slashes=False)
 def delete_amenity(amenity_id):
     """ """
     amenity = storage.get(Amenity, amenity_id)
