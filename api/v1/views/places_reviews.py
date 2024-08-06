@@ -61,10 +61,11 @@ def update_review(review_id):
     review = storage.get(Review, review_id)
     if not review:
         abort(404)
-    if not request.is_json:
-        abort(400, "Not a json")
 
     data = request.get_json()
+    if data is None:
+        abort(400, description="Not a json")
+
     for key, value in data.items():
         if key not in IGNORED_KEYS:
             setattr(review, key, value)
