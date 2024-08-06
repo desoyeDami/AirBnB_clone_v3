@@ -1,10 +1,10 @@
 #!/usr/bin/python3
-""" Review  """
+""" Object that handles all  Review default RESTFul API action """
 from api.v1.views import app_views
 from flask import jsonify, request, abort
 from models.place import Place
 from models.review import Review
-from models.users import User
+from models.user import User
 from models import storage
 PL = '/places/<place_id>/reviews'
 RV = '/reviews/<review_id>'
