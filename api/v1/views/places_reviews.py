@@ -4,6 +4,7 @@ from api.v1.views import app_views
 from flask import jsonify, request, abort
 from models.place import Place
 from models.review import Review
+from models.users import User
 from models import storage
 PL = '/places/<place_id>/reviews'
 RV = '/reviews/<review_id>'
@@ -13,8 +14,8 @@ IGNORED_KEYS = ['id', 'user_id', 'place_id', 'created_at', 'updated_at']
 @app_views.route(PL, methods=['GET'], strict_slashes=False)
 def get_reviews_from_place(place_id):
     """ """
-    reviews = storage.get(Review, review_id)
-    if not review:
+    places = storage.get(Place, place_id)
+    if not places:
         abort(404)
     return jsonify([review.to_dict() for review in places.reviews])
 
@@ -34,10 +35,10 @@ def create_review_for_place(place_id):
     place = storage.get(Place, place_id)
     if not place:
         abort(404)
-    if not request.json:
-        abort(404, "Not a JSON")
 
     data = request.get_json()
+    if data is None:
+        abort(400, "Not a JSON")
 
     if "user_id" not in data:
         abort(400, "Missing user_id")
