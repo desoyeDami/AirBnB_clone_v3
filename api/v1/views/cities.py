@@ -32,16 +32,12 @@ def create_city_for_state(state_id):
     state = storage.get(State, state_id)
     if not state:
         abort(404)
+    data = request.get_json(silent=True)
+    if data is None:
+        abort(400, description="Not a JSON")
 
-    if not request.json:
-        abort(404, "Not a JSON")
-
-    data = request.get_json()
-    state = storage.get(State, data['state_id'])
-    if not state:
-        abort(404)
-    if "name" not in request.json:
-        abort(400, "Missing name")
+    if "name" not in data:
+        abort(400, description="Missing name")
 
     data['state_id'] = state_id
     new_city = City(**data)
