@@ -64,7 +64,7 @@ def update_review(review_id):
 
     data = request.get_json()
     if data is None:
-        abort(400, description="Not a json")
+        abort(400, description="Not a JSON")
 
     for key, value in data.items():
         if key not in IGNORED_KEYS:
