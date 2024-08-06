@@ -12,8 +12,8 @@ PL = '/places/<place_id>'
 @app_views.route(CT, methods=['GET'], strict_slashes=False)
 def get_places_from_city(city_id):
     """ """
-    places = storage.get(Place, place_id)
-    if not place:
+    cities = storage.get(City, city_id)
+    if not cities:
         abort(404)
     return jsonify([place.to_dict() for place in cities.places])
 
@@ -33,20 +33,20 @@ def create_place_for_city(city_id):
     city = storage.get(City, city_id)
     if not city:
         abort(404)
-    if not request.json:
-        abort(404, "Not a JSON")
 
-    data = request.get_json()
+    data = request.get_json(silent=True)
+    if data is None:
+        abort(400, description="Not a JSON")
 
     if "user_id" not in data:
-        abort(400, "Missing user_id")
+        abort(400, description="Missing user_id")
 
     user = storage.get(User, data['user_id'])
     if not user:
         abort(404)
 
     if "name" not in data:
-        abort(400, "Missing name")
+        abort(400, description="Missing name")
 
     data['city_id'] = city_id
     new_place = Place(**data)
