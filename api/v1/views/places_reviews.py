@@ -14,10 +14,10 @@ IGNORED_KEYS = ['id', 'user_id', 'place_id', 'created_at', 'updated_at']
 @app_views.route(PL, methods=['GET'], strict_slashes=False)
 def get_reviews_from_place(place_id):
     """ """
-    places = storage.get(Place, place_id)
-    if not places:
+    place = storage.get(Place, place_id)
+    if not place:
         abort(404)
-    return jsonify([review.to_dict() for review in places.reviews])
+    return jsonify([review.to_dict() for review in place.reviews])
 
 
 @app_views.route(RV, methods=['GET'], strict_slashes=False)
@@ -38,15 +38,15 @@ def create_review_for_place(place_id):
 
     data = request.get_json()
     if data is None:
-        abort(400, "Not a JSON")
+        abort(400, description="Not a JSON")
     if "user_id" not in data:
-        abort(400, "Missing user_id")
+        abort(400, description="Missing user_id")
 
     user = storage.get(User, data['user_id'])
     if not user:
         abort(404)
     if "text" not in data:
-        abort(400, "Missing text")
+        abort(400, description="Missing text")
 
     data['place_id'] = place_id
     new_review = Review(**data)
