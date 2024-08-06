@@ -25,14 +25,13 @@ def get_user(user_id):
 @app_views.route('/users', methods=['POST'], strict_slashes=False)
 def create_user():
     """ """
-    if not request.json:
-        abort(404, "Not a JSON")
-
     data = request.get_json()
+    if data is None:
+        abort(400, description="Not a JSON")
     if "email" not in request.json:
-        abort(400, "Missing email")
+        abort(400, description="Missing email")
     if "password" not in request.json:
-        abort(400, "Missing password")
+        abort(400, description="Missing password")
     new_user = User(**data)
     storage.new(new_user)
     storage.save()
