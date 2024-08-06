@@ -26,12 +26,12 @@ def get_state(state_id):
 @app_views.route('/states', methods=['POST'], strict_slashes=False)
 def create_state():
     """ """
-    if not request.json:
-        abort(400, "Not a JSON")
+    data = request.get_json(silent=True)
+    if data is None:
+        abort(400, description="Not a JSON")
 
-    data = request.get_json()
-    if "name" not in request.json:
-        abort(400, "Missing name")
+    if "name" not in data:
+        abort(400, description="Missing name")
 
     new_state = State(**data)
     storage.new(new_state)
