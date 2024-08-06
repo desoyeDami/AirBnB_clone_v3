@@ -1,4 +1,5 @@
 #!/usr/bin/python3
+""" """
 from api.v1.views import app_views
 from flask import jsonify, request, abort
 from models.state import State
@@ -16,7 +17,6 @@ def get_states():
 @app_views.route('/states/<state_id>', methods=['GET'], strict_slashes=False)
 def get_state(state_id):
     """ """
-    print("ERROR")
     state = storage.get(State, state_id)
     if not state:
         abort(404)
