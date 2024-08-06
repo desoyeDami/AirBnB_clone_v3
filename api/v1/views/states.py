@@ -27,7 +27,7 @@ def get_state(state_id):
 def create_state():
     """ """
     if not request.json:
-        abort(404, "Not a JSON")
+        abort(400, "Not a JSON")
 
     data = request.get_json()
     if "name" not in request.json:
